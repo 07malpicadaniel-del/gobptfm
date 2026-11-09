@@ -331,3 +331,4 @@ mod tests {
         assert!(CriCode::try_new("1.2.A1").is_err());
     }
 }
+

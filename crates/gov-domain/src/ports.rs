@@ -60,3 +60,4 @@ pub trait MunicipalBridgePort: Send + Sync {
         paid_amount: MoneyCents,
     ) -> Result<String, DomainError>;
 }
+

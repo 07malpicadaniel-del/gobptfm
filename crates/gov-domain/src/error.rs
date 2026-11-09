@@ -41,3 +41,4 @@ pub enum DomainError {
     #[error("taxpayer privacy verification hash mismatch")]
     PrivacyVerificationFailed,
 }
+

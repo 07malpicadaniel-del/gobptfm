@@ -37,7 +37,7 @@ chrono = { version = "0.4", features = ["serde"] }
 thiserror = "1.0"
 
 # Persistencia Nube & Local
-sqlx = { version = "0.8", features = ["runtime-tokio-rustls", "postgres", "uuid", "chrono", "rust_decimal"] }
+sqlx = { version = "0.9", features = ["runtime-tokio", "postgres", "uuid", "chrono", "json"] }
 redb = "2.1"
 
 # Criptografía & Reglas
