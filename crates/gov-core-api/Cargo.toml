@@ -10,20 +10,6 @@ gov-proto = { path = "../gov-proto" }
 gov-ledger = { path = "../gov-ledger" }
 gov-tax-engine = { path = "../gov-tax-engine" }
 gov-receipt = { path = "../gov-receipt" }
-axum.workspace = true
-chrono.workspace = true
-futures.workspace = true
-serde.workspace = true
-serde_json.workspace = true
-sqlx.workspace = true
-thiserror.workspace = true
-tokio.workspace = true
-tonic.workspace = true
-tower.workspace = true
-tower-http.workspace = true
-tracing.workspace = true
-tracing-subscriber.workspace = true
-uuid.workspace = true
 
 [lints]
 workspace = true

@@ -59,3 +59,4 @@ panic = "deny"
 todo = "warn"
 float_arithmetic = "deny"
 lossy_float_literal = "deny"
+

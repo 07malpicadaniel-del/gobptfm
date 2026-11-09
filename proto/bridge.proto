@@ -5,3 +5,4 @@ package gov.bridge.v1;
 // Contrato gRPC bidireccional (Nube <-> Municipio)
 // Se expandirá en la Fase 4 (proto + gov-edge-agent).
 service MunicipalBridgeService {}
+

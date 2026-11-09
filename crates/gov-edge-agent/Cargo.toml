@@ -7,19 +7,6 @@ rust-version.workspace = true
 [dependencies]
 gov-domain = { path = "../gov-domain" }
 gov-proto = { path = "../gov-proto" }
-async-trait.workspace = true
-chrono.workspace = true
-futures.workspace = true
-redb.workspace = true
-serde.workspace = true
-serde_json.workspace = true
-sqlx.workspace = true
-thiserror.workspace = true
-tokio.workspace = true
-tonic.workspace = true
-tracing.workspace = true
-tracing-subscriber.workspace = true
-uuid.workspace = true
 
 [lints]
 workspace = true

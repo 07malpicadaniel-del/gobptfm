@@ -18,3 +18,4 @@
 - `gov-domain` MUST NOT depend on `sqlx`, `axum`, `tonic`, or any I/O crate. It contains pure domain logic, newtypes, and trait definitions.
 - `gov-core-api` NEVER connects directly to a municipal database. All communication with municipal legacy systems happens asynchronously through `gov-proto` (gRPC stream) and the `sync_outbox` table.
 - All UUIDs for database primary keys and ledger entries MUST use `Uuid::now_v7()` (time-ordered UUIDv7) to prevent B-Tree index fragmentation in PostgreSQL.
+
