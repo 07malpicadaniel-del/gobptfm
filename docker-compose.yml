@@ -1,0 +1,49 @@
+services:
+  postgres-core:
+    image: postgres:17-alpine
+    container_name: gov-postgres-core
+    environment:
+      POSTGRES_USER: gov_core
+      POSTGRES_PASSWORD: gov_core_dev_password
+      POSTGRES_DB: gov_core_ledger
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_core_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gov_core -d gov_core_ledger"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  valkey:
+    image: valkey/valkey:8-alpine
+    container_name: gov-valkey
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  postgres-municipal-mock:
+    image: postgres:17-alpine
+    container_name: gov-postgres-municipal-mock
+    environment:
+      POSTGRES_USER: muni_legacy
+      POSTGRES_PASSWORD: muni_legacy_dev_password
+      POSTGRES_DB: catastro_legacy
+    ports:
+      - "5433:5432"
+    volumes:
+      - pg_muni_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U muni_legacy -d catastro_legacy"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pg_core_data:
+  pg_muni_data:

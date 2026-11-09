@@ -1,0 +1,22 @@
+# Rust / Cargo
+/target/
+**/*.rs.bk
+*.pdb
+
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+
+# Local Databases (redb / sqlite)
+*.redb
+*.db
+
+# IDE & OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
