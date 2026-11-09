@@ -74,3 +74,4 @@ impl From<LedgerError> for DomainError {
         }
     }
 }
+

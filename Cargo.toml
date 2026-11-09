@@ -43,7 +43,7 @@ redb = "2.1"
 # Criptografía & Reglas
 ed25519-dalek = { version = "2.1", features = ["rand_core"] }
 sha2 = "0.10"
-rhai = { version = "1.19", features = ["sync", "decimal", "serde"] }
+rhai = { version = "1.19", features = ["sync", "decimal", "serde", "no_float"] }
 
 # Observabilidad
 tracing = "0.1"

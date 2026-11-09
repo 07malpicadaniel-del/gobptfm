@@ -144,3 +144,4 @@ CREATE TABLE IF NOT EXISTS sync_outbox (
 CREATE INDEX IF NOT EXISTS idx_sync_outbox_pending_dispatch
     ON sync_outbox (tenant_id, next_attempt_at)
     WHERE status = 'PendingSync';
+

@@ -40,5 +40,8 @@ pub enum DomainError {
 
     #[error("taxpayer privacy verification hash mismatch")]
     PrivacyVerificationFailed,
+
+    #[error("tax rule evaluation failed: {0}")]
+    TaxRuleEvaluationFailed(String),
 }
 
