@@ -287,3 +287,4 @@ impl<A: LegacyMunicipalDbAdapter> MunicipalBridgePort for EdgeCoordinator<A> {
         }
     }
 }
+

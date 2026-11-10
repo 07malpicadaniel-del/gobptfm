@@ -217,3 +217,4 @@ impl LegacyMunicipalDbAdapter for InMemoryLegacyAdapter {
         Ok(modified)
     }
 }
+

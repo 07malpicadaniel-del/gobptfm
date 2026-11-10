@@ -53,3 +53,4 @@ impl From<EdgeError> for DomainError {
         }
     }
 }
+
