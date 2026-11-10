@@ -2,7 +2,91 @@ syntax = "proto3";
 
 package gov.bridge.v1;
 
-// Contrato gRPC bidireccional (Nube <-> Municipio)
-// Se expandirá en la Fase 4 (proto + gov-edge-agent).
-service MunicipalBridgeService {}
+// Estado de confirmación de inyección de un pago en el sistema municipal legacy.
+enum InjectionAckStatus {
+  INJECTION_ACK_STATUS_UNSPECIFIED = 0;
+  COMMITTED = 1;
+  QUEUED_LOCALLY = 2;
+  REJECTED_CONFLICT = 3;
+}
 
+// Verificación previa (preflight check) antes de autorizar cobro digital.
+message PreflightDebtCheckRequest {
+  string request_id = 1;
+  string tenant_id = 2;
+  string department = 3;
+  string external_tax_id = 4;
+  int64 expected_amount_cents = 5;
+}
+
+// Respuesta del sistema legacy municipal al preflight check.
+message PreflightDebtCheckResponse {
+  string request_id = 1;
+  bool is_valid = 2;
+  int64 current_legacy_debt_cents = 3;
+  bool is_already_paid_in_window = 4;
+  string rejection_reason = 5;
+}
+
+// Comando idempotente para inyectar un pago autorizado en la base de datos legacy municipal.
+message InjectPaymentCommand {
+  string outbox_id = 1;
+  string payment_id = 2;
+  string tenant_id = 3;
+  string department = 4;
+  string external_tax_id = 5;
+  string idempotency_key = 6;
+  int64 amount_cents = 7;
+  int32 fiscal_year = 8;
+  int64 paid_at_unix = 9;
+}
+
+// Confirmación emitida por gov-edge-agent tras procesar un InjectPaymentCommand.
+message InjectPaymentAck {
+  string outbox_id = 1;
+  string payment_id = 2;
+  InjectionAckStatus status = 3;
+  string legacy_receipt_folio = 4;
+  string error_message = 5;
+}
+
+// Delta de sincronización de cuenta catastral/padrón desde el municipio hacia la nube.
+message LegacyAccountDelta {
+  string tenant_id = 1;
+  string department = 2;
+  string external_tax_id = 3;
+  string owner_verification_hash = 4;
+  int64 cadastral_or_base_value_cents = 5;
+  string active_benefit = 6;
+  bool is_paid_current_year = 7;
+  int64 updated_at_unix = 8;
+  string metadata_json = 9;
+}
+
+// Telemetría de salud y estado del spool local del agente municipal.
+message AgentHeartbeat {
+  string tenant_id = 1;
+  string agent_version = 2;
+  uint64 pending_spool_count = 3;
+  bool legacy_db_reachable = 4;
+  int64 timestamp_unix = 5;
+}
+
+// Envoltorio polimórfico del túnel bidireccional Nube <-> Municipio.
+message BridgeEnvelope {
+  oneof payload {
+    PreflightDebtCheckRequest preflight_request = 1;
+    PreflightDebtCheckResponse preflight_response = 2;
+    InjectPaymentCommand inject_payment_command = 3;
+    InjectPaymentAck inject_payment_ack = 4;
+    LegacyAccountDelta account_delta = 5;
+    AgentHeartbeat heartbeat = 6;
+  }
+}
+
+// Servicio gRPC bidireccional entre Nube (gov-core-api) y Municipio (gov-edge-agent).
+service MunicipalBridgeService {
+  rpc OpenBridgeStream(stream BridgeEnvelope) returns (stream BridgeEnvelope);
+  rpc CheckDebtPreflight(PreflightDebtCheckRequest) returns (PreflightDebtCheckResponse);
+  rpc InjectPayment(InjectPaymentCommand) returns (InjectPaymentAck);
+}
